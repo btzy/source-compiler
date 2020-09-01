@@ -5,7 +5,7 @@ use crate::*;
  * Relabels all the TargetExpr that target locals, according to the relabeller.
  * While the relabeller is mutable, this function will return the relabeller to its original state before returning.
  */
-pub fn relabel(expr: &mut Expr, relabeller: &mut Relabeller) -> bool {
+pub fn relabel(expr: &mut Expr, relabeller: &mut Relabeller<()>) -> bool {
     // Note: we explicitly list out all possibilities so we will get a compile error if a new exprkind is added.
     match &mut expr.kind {
         ExprKind::PrimUndefined
@@ -26,7 +26,8 @@ pub fn relabel(expr: &mut Expr, relabeller: &mut Relabeller) -> bool {
         } => {
             relabel(&mut **test, relabeller)
                 | if *create_narrow_local {
-                    relabeller.with_entry(|relabeller, _, _| relabel(&mut **true_expr, relabeller))
+                    relabeller
+                        .with_entry((), |relabeller, _, _| relabel(&mut **true_expr, relabeller))
                 } else {
                     relabel(&mut **true_expr, relabeller)
                 }
@@ -67,8 +68,9 @@ pub fn relabel(expr: &mut Expr, relabeller: &mut Relabeller) -> bool {
                 relabel(&mut **init_expr, relabeller)
             } else {
                 false
-            }) | relabeller
-                .with_entry(|relabeller, _, _| relabel(&mut **contained_expr, relabeller))
+            }) | relabeller.with_entry((), |relabeller, _, _| {
+                relabel(&mut **contained_expr, relabeller)
+            })
         }
         ExprKind::Assign { target, expr } => {
             relabel_target(target, relabeller) | relabel(&mut **expr, relabeller)
@@ -89,9 +91,9 @@ pub fn relabel(expr: &mut Expr, relabeller: &mut Relabeller) -> bool {
     }
 }
 
-pub fn relabel_target(target: &mut TargetExpr, relabeller: &mut Relabeller) -> bool {
+pub fn relabel_target(target: &mut TargetExpr, relabeller: &mut Relabeller<()>) -> bool {
     if let TargetExpr::Local { localidx, next: _ } = target {
-        let new_localidx: usize = relabeller.map_old_to_new(*localidx).unwrap();
+        let (new_localidx, _): (usize, &()) = relabeller.map_old_to_new(*localidx).unwrap();
         if new_localidx != *localidx {
             *localidx = new_localidx;
             true

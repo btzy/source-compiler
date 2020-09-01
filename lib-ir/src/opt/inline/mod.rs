@@ -295,7 +295,7 @@ fn wrap_declarations<F: FnOnce(SiteProperties) -> Expr>(
 ) -> Expr {
     fn wrap_decl_recursive<F: FnOnce(SiteProperties) -> Expr>(
         mut args_remaining: impl Iterator<Item = (Expr, VarType)>,
-        args_relabeller: &mut Relabeller,
+        args_relabeller: &mut Relabeller<()>,
         f_site: SiteProperties,
         f: F,
     ) -> Expr {
@@ -319,7 +319,7 @@ fn wrap_declarations<F: FnOnce(SiteProperties) -> Expr>(
     }
     wrap_decl_recursive(
         actual_args.zip(params.iter().copied()),
-        &mut Relabeller::new_with_identities((0..site.num_locals()).into_iter()),
+        &mut Relabeller::new_with_identities((0..site.num_locals()).map(|i| (i, ()))),
         site,
         f,
     )

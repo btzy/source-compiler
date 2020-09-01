@@ -22,7 +22,7 @@ pub fn optimize(mut program: Program) -> (Program, bool) {
 fn optimize_func(func: &mut Func) -> bool {
     optimize_expr(
         &mut func.expr,
-        &mut Relabeller::new_with_identities(0..func.params.len()),
+        &mut Relabeller::new_with_identities((0..func.params.len()).map(|i| (i, ()))),
     )
 }
 
@@ -55,7 +55,7 @@ fn write_new_expr(
 /**
  * Mapping from current idx to new idx.
  */
-fn optimize_expr(expr: &mut Expr, local_map: &mut Relabeller) -> bool {
+fn optimize_expr(expr: &mut Expr, local_map: &mut Relabeller<()>) -> bool {
     // Note: we explicitly list out all possibilities so we will get a compile error if a new exprkind is added.
     match &mut expr.kind {
         ExprKind::PrimUndefined
@@ -81,7 +81,7 @@ fn optimize_expr(expr: &mut Expr, local_map: &mut Relabeller) -> bool {
                     // we still need the typecast
                     let ret = optimize_expr(&mut **test, local_map);
                     ret | if cnl {
-                        local_map.with_entry(|local_map, _, _| {
+                        local_map.with_entry((), |local_map, _, _| {
                             optimize_expr(&mut **true_expr, local_map)
                         })
                     } else {
@@ -93,7 +93,7 @@ fn optimize_expr(expr: &mut Expr, local_map: &mut Relabeller) -> bool {
                     if vartype == *expected {
                         // we should always take true_expr
                         let opt_num_locals = if cnl {
-                            local_map.with_entry(|local_map, _, new_local| {
+                            local_map.with_entry((), |local_map, _, new_local| {
                                 optimize_expr(&mut **true_expr, local_map);
                                 Some(new_local)
                             })
@@ -156,8 +156,9 @@ fn optimize_expr(expr: &mut Expr, local_map: &mut Relabeller) -> bool {
                 optimize_expr(&mut **init_expr, local_map)
             } else {
                 false
-            }) | local_map
-                .with_entry(|local_map, _, _| optimize_expr(&mut **contained_expr, local_map))
+            }) | local_map.with_entry((), |local_map, _, _| {
+                optimize_expr(&mut **contained_expr, local_map)
+            })
         }
         ExprKind::Assign { target, expr } => {
             relabel_target(target, local_map) | optimize_expr(&mut **expr, local_map)

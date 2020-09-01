@@ -52,7 +52,9 @@ fn optimize_func(func: &mut Func, ctx: Context) -> bool {
     let (ret, landing_vartype) = LandingContext::with_new_func(|landing_ctx| {
         optimize_expr(
             &mut func.expr,
-            &mut Relabeller::new_with_identities(0..func.params.len()),
+            &mut Relabeller::new_with_identities(
+                (0..func.params.len()).zip(func.params.iter().copied()),
+            ),
             ctx,
             landing_ctx,
         )
@@ -63,17 +65,26 @@ fn optimize_func(func: &mut Func, ctx: Context) -> bool {
     )
 }
 
-fn relabel_target(target: &mut TargetExpr, local_map: &mut Relabeller) -> bool {
-    if let TargetExpr::Local { localidx, next: _ } = target {
-        let new_localidx: usize = local_map.map_old_to_new(*localidx).unwrap();
-        if new_localidx != *localidx {
-            *localidx = new_localidx;
-            true
-        } else {
-            false
+fn relabel_target(
+    target: &mut TargetExpr,
+    out_vartype: &mut Option<VarType>,
+    local_map: &mut Relabeller<VarType>,
+) -> bool {
+    match target {
+        TargetExpr::Local { localidx, next: _ } => {
+            let (new_localidx, vartype): (usize, &VarType) =
+                local_map.map_old_to_new(*localidx).unwrap();
+            let existing_vartype = *out_vartype.as_ref().unwrap();
+            // the unwrap() in the following line ensures that the intersect_type is not None
+            useful_update(localidx, new_localidx)
+                | useful_update(
+                    out_vartype,
+                    Some(intersect_type(existing_vartype, *vartype).unwrap()),
+                )
         }
-    } else {
-        false
+        TargetExpr::Global { globalidx, next: _ } => {
+            false // todo! we want to use the vartype of the global
+        }
     }
 }
 
@@ -83,7 +94,7 @@ fn relabel_target(target: &mut TargetExpr, local_map: &mut Relabeller) -> bool {
  */
 fn optimize_expr(
     expr: &mut Expr,
-    local_map: &mut Relabeller,
+    local_map: &mut Relabeller<VarType>,
     ctx: Context,
     landing_ctx: &mut LandingContext,
 ) -> bool {
@@ -144,7 +155,7 @@ fn optimize_expr(
                         // we still need the typecast
                         let ret = test_res
                             | if cnl {
-                                local_map.with_entry(|local_map, _, _| {
+                                local_map.with_entry(*expected, |local_map, _, _| {
                                     optimize_expr(&mut **true_expr, local_map, ctx, landing_ctx)
                                 })
                             } else {
@@ -186,7 +197,7 @@ fn optimize_expr(
                         if vartype == *expected {
                             // only need the true branch
                             if cnl {
-                                local_map.with_entry(|local_map, _, _| {
+                                local_map.with_entry(*expected, |local_map, _, _| {
                                     optimize_expr(&mut **true_expr, local_map, ctx, landing_ctx);
                                 })
                             } else {
@@ -207,7 +218,7 @@ fn optimize_expr(
                 }
             }
         }
-        ExprKind::VarName { source } => relabel_target(source, local_map),
+        ExprKind::VarName { source } => relabel_target(source, &mut expr.vartype, local_map),
         ExprKind::PrimAppl { prim_inst: _, args } => {
             let mut ret = false;
             for (i, arg) in args.iter_mut().enumerate() {
@@ -301,7 +312,7 @@ fn optimize_expr(
             }
         }
         ExprKind::Declaration {
-            local: _,
+            local,
             init,
             contained_expr,
         } => {
@@ -317,7 +328,7 @@ fn optimize_expr(
                 true
             } else {
                 let real_res = init_res
-                    | local_map.with_entry(|local_map, _, _| {
+                    | local_map.with_entry(*local, |local_map, _, _| {
                         optimize_expr(&mut **contained_expr, local_map, ctx, landing_ctx)
                     });
                 real_res | useful_update(&mut expr.vartype, contained_expr.vartype)
@@ -328,7 +339,7 @@ fn optimize_expr(
             expr: expr2,
         } => {
             assert!(expr.vartype == Some(VarType::Undefined));
-            let ret = relabel_target(target, local_map)
+            let ret = relabel_target(target, &mut expr.vartype, local_map)
                 | optimize_expr(&mut **expr2, local_map, ctx, landing_ctx);
             // If the RHS of assignment is none, then the assignment can't actually happen,
             // so we are just executing the RHS for its side-effects.
@@ -746,7 +757,7 @@ fn try_const_eval(expr: &mut Expr) -> bool {
  */
 fn try_devirtualize_appl(
     expr: &mut Expr,
-    local_map: &mut Relabeller,
+    local_map: &mut Relabeller<VarType>,
     ctx: Context,
     landing_ctx: &mut LandingContext,
 ) -> bool {
@@ -1019,7 +1030,7 @@ fn try_devirtualize_appl(
                     fn wrap_declarations(
                         wrapped_expr: Expr,
                         mut args_it: impl Iterator<Item = Expr>,
-                        local_map: &mut Relabeller,
+                        local_map: &mut Relabeller<VarType>,
                         ctx: Context,
                         landing_ctx: &mut LandingContext,
                     ) -> Expr {
