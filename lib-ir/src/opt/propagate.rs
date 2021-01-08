@@ -1,4 +1,6 @@
 use super::landing_context::LandingContext;
+use super::var_context::*;
+use std::convert::TryInto;
 use super::relabeller::Relabeller;
 use super::superset::*;
 use super::union_type;
@@ -9,6 +11,7 @@ use projstd::iter::*;
 
 /**
  * Discretionary optimisation to propagate all types and values as much as possible.
+ * Propagation in expressions happen in this file itself.
  * This does a superset of unreachable.rs and typecast.rs, so you don't need to use those if you use this optimization.
  * The second return value is true if the program got changed, or false otherwise.
  */
@@ -33,6 +36,7 @@ pub fn optimize(mut program: Program) -> (Program, bool) {
                 param_types: &param_types,
                 result_types: &result_types,
             },
+            &program.globals,
         );
     }
     (program, changed)
@@ -48,8 +52,8 @@ struct Context<'a, 'b> {
  * Optimises the function.
  * The return value is true if the function got changed, or false otherwise.
  */
-fn optimize_func(func: &mut Func, ctx: Context) -> bool {
-    let (ret, landing_vartype) = LandingContext::with_new_func(|landing_ctx| {
+fn optimize_func(func: &mut Func, ctx: Context, globals: &[VarType]) -> bool {
+    let (ret, landing_vartype) = LandingContext::with_new_func(move |landing_ctx| {
         optimize_expr(
             &mut func.expr,
             &mut Relabeller::new_with_identities(
@@ -57,6 +61,7 @@ fn optimize_func(func: &mut Func, ctx: Context) -> bool {
             ),
             ctx,
             landing_ctx,
+            &mut VarContext::new_with_globals_and_params(globals, &func.params),
         )
     });
     ret | useful_update(
@@ -91,12 +96,15 @@ fn relabel_target(
 /**
  * Optimises the expr.
  * The return value is true if the function got changed, or false otherwise.
+ * Note: var_ctx will be changed by this function, and it must be given to nested optimized_expr in evaluation order!
+ * Note: var_ctx only uses new localidxs.  If you have old indices, use local_map to translate them first.
  */
 fn optimize_expr(
     expr: &mut Expr,
     local_map: &mut Relabeller<VarType>,
     ctx: Context,
     landing_ctx: &mut LandingContext,
+    var_ctx: &mut VarContext,
 ) -> bool {
     // Note: we explicitly list out all possibilities so we will get a compile error if a new exprkind is added.
     match &mut expr.kind {
@@ -124,7 +132,7 @@ fn optimize_expr(
             funcidxs: _,
             closure,
         } => {
-            let ret = optimize_expr(&mut **closure, local_map, ctx, landing_ctx);
+            let ret = optimize_expr(&mut **closure, local_map, ctx, landing_ctx, var_ctx);
             if closure.vartype.is_none() {
                 let expr_tmp = std::mem::replace(&mut **closure, dummy_expr());
                 *expr = expr_tmp;
@@ -142,7 +150,7 @@ fn optimize_expr(
         } => {
             assert!(*expected != VarType::Any); // expected should never be any, otherwise we shouldn't have emitted this cast
             let cnl = *create_narrow_local;
-            let test_res = optimize_expr(&mut **test, local_map, ctx, landing_ctx);
+            let test_res = optimize_expr(&mut **test, local_map, ctx, landing_ctx, var_ctx);
             match test.vartype {
                 None => {
                     // test expr is noreturn
@@ -155,13 +163,15 @@ fn optimize_expr(
                         // we still need the typecast
                         let ret = test_res
                             | if cnl {
+                                // for a typecast, the new local is considered to come from a complex expression
                                 local_map.with_entry(*expected, |local_map, _, _| {
-                                    optimize_expr(&mut **true_expr, local_map, ctx, landing_ctx)
+                                    var_ctx.with_variable(*expected, None, |var_ctx|
+                                    optimize_expr(&mut **true_expr, local_map, ctx, landing_ctx, var_ctx))
                                 })
                             } else {
-                                optimize_expr(&mut **true_expr, local_map, ctx, landing_ctx)
+                                optimize_expr(&mut **true_expr, local_map, ctx, landing_ctx, var_ctx)
                             }
-                            | optimize_expr(&mut **false_expr, local_map, ctx, landing_ctx);
+                            | optimize_expr(&mut **false_expr, local_map, ctx, landing_ctx, var_ctx);
                         ret | useful_update(
                             &mut expr.vartype,
                             union_type(true_expr.vartype, false_expr.vartype),
@@ -198,16 +208,18 @@ fn optimize_expr(
                             // only need the true branch
                             if cnl {
                                 local_map.with_entry(*expected, |local_map, _, _| {
-                                    optimize_expr(&mut **true_expr, local_map, ctx, landing_ctx);
-                                })
+                                    var_ctx.with_variable(*expected, (&test.kind).try_into().ok(), |var_ctx| {
+                                        optimize_expr(&mut **true_expr, local_map, ctx, landing_ctx, var_ctx);
+                                    });
+                                });
                             } else {
-                                optimize_expr(&mut **true_expr, local_map, ctx, landing_ctx);
+                                optimize_expr(&mut **true_expr, local_map, ctx, landing_ctx, var_ctx);
                             }
                             let true_tmp = std::mem::replace(&mut **true_expr, dummy_expr());
                             write_expr(expr, vartype, test_tmp, true_tmp, cnl); // also sets expr.vartype appropriately
                         } else {
                             // only need the false branch
-                            optimize_expr(&mut **false_expr, local_map, ctx, landing_ctx);
+                            optimize_expr(&mut **false_expr, local_map, ctx, landing_ctx, var_ctx);
                             let false_tmp = std::mem::replace(&mut **false_expr, dummy_expr());
                             write_expr(expr, vartype, test_tmp, false_tmp, false);
                             // also sets expr.vartype appropriately
@@ -218,11 +230,23 @@ fn optimize_expr(
                 }
             }
         }
-        ExprKind::VarName { source } => relabel_target(source, &mut expr.vartype, local_map),
+        ExprKind::VarName { source } => {
+            let ret = relabel_target(source, &mut expr.vartype, local_map);
+            match (&*source).try_into() {
+                Err(_) => ret,
+                Ok(variable_ref) => match var_ctx.get_type_and_try_get_reference(variable_ref) {
+                    (vartype, None) => ret,
+                    (vartype, Some(reference)) => {
+                        *expr = (vartype, reference).into();
+                        true
+                    }
+                }
+            }
+        }
         ExprKind::PrimAppl { prim_inst: _, args } => {
             let mut ret = false;
             for (i, arg) in args.iter_mut().enumerate() {
-                ret |= optimize_expr(arg, local_map, ctx, landing_ctx);
+                ret |= optimize_expr(arg, local_map, ctx, landing_ctx, var_ctx);
                 if arg.vartype.is_none() {
                     let mut tmp_args = std::mem::take(args).into_vec();
                     tmp_args.truncate(i + 1);
@@ -237,14 +261,14 @@ fn optimize_expr(
             args,
             location: _,
         } => {
-            let mut ret = optimize_expr(func, local_map, ctx, landing_ctx);
+            let mut ret = optimize_expr(func, local_map, ctx, landing_ctx, var_ctx);
             if func.vartype.is_none() {
                 let tmp_func = std::mem::replace(&mut **func, dummy_expr());
                 *expr = tmp_func;
                 true
             } else {
                 for (i, arg) in args.iter_mut().enumerate() {
-                    ret |= optimize_expr(arg, local_map, ctx, landing_ctx);
+                    ret |= optimize_expr(arg, local_map, ctx, landing_ctx, var_ctx);
                     if arg.vartype.is_none() {
                         let tmp_func = std::mem::replace(&mut **func, dummy_expr());
                         let mut tmp_args = std::mem::take(args).into_vec();
@@ -260,7 +284,7 @@ fn optimize_expr(
         ExprKind::DirectAppl { funcidx, args } => {
             let mut ret = false;
             for (i, arg) in args.iter_mut().enumerate() {
-                ret |= optimize_expr(arg, local_map, ctx, landing_ctx);
+                ret |= optimize_expr(arg, local_map, ctx, landing_ctx, var_ctx);
                 if arg.vartype.is_none() {
                     let mut tmp_args = std::mem::take(args).into_vec();
                     tmp_args.truncate(i + 1);
@@ -275,7 +299,7 @@ fn optimize_expr(
             true_expr,
             false_expr,
         } => {
-            let cond_res = optimize_expr(&mut **cond, local_map, ctx, landing_ctx);
+            let cond_res = optimize_expr(&mut **cond, local_map, ctx, landing_ctx, var_ctx);
             if cond.vartype.is_none() {
                 let expr_tmp = std::mem::replace(&mut **cond, dummy_expr());
                 *expr = expr_tmp;
@@ -286,13 +310,13 @@ fn optimize_expr(
                     // just keep and optimize the reachable branch
                     if cond_val {
                         // true_expr is reachable
-                        optimize_expr(&mut **true_expr, local_map, ctx, landing_ctx);
+                        optimize_expr(&mut **true_expr, local_map, ctx, landing_ctx, var_ctx);
                         // just keep the true_expr (since the cond has no side-effects)
                         let expr_tmp = std::mem::replace(&mut **true_expr, dummy_expr());
                         *expr = expr_tmp;
                     } else {
                         // false_expr is reachable
-                        optimize_expr(&mut **false_expr, local_map, ctx, landing_ctx);
+                        optimize_expr(&mut **false_expr, local_map, ctx, landing_ctx, var_ctx);
                         // just keep the false_expr (since the cond has no side-effects)
                         let expr_tmp = std::mem::replace(&mut **false_expr, dummy_expr());
                         *expr = expr_tmp;
@@ -302,8 +326,8 @@ fn optimize_expr(
                     // not a constant expr
                     // so we have to optimize both branches
                     let ret = cond_res
-                        | optimize_expr(&mut **true_expr, local_map, ctx, landing_ctx)
-                        | optimize_expr(&mut **false_expr, local_map, ctx, landing_ctx);
+                        | optimize_expr(&mut **true_expr, local_map, ctx, landing_ctx, var_ctx)
+                        | optimize_expr(&mut **false_expr, local_map, ctx, landing_ctx, var_ctx);
                     ret | useful_update(
                         &mut expr.vartype,
                         union_type(true_expr.vartype, false_expr.vartype),
@@ -317,7 +341,7 @@ fn optimize_expr(
             contained_expr,
         } => {
             let (init_res, init_is_none) = if let Some(init_expr) = init {
-                let res = optimize_expr(&mut **init_expr, local_map, ctx, landing_ctx);
+                let res = optimize_expr(&mut **init_expr, local_map, ctx, landing_ctx, var_ctx);
                 (res, init_expr.vartype.is_none())
             } else {
                 (false, false)
@@ -329,7 +353,8 @@ fn optimize_expr(
             } else {
                 let real_res = init_res
                     | local_map.with_entry(*local, |local_map, _, _| {
-                        optimize_expr(&mut **contained_expr, local_map, ctx, landing_ctx)
+                        var_ctx.with_variable(*local, init.as_deref().map_or(Some(Reference::Constant(Constant::PrimUnassigned)), |init_ref| (&init_ref.kind).try_into().ok()), |var_ctx|
+                        optimize_expr(&mut **contained_expr, local_map, ctx, landing_ctx, var_ctx))
                     });
                 real_res | useful_update(&mut expr.vartype, contained_expr.vartype)
             }
@@ -339,18 +364,21 @@ fn optimize_expr(
             expr: expr2,
         } => {
             assert!(expr.vartype == Some(VarType::Undefined));
-            let ret = relabel_target(target, &mut expr.vartype, local_map)
-                | optimize_expr(&mut **expr2, local_map, ctx, landing_ctx);
+            let ret = optimize_expr(&mut **expr2, local_map, ctx, landing_ctx, var_ctx) | relabel_target(target, &mut expr.vartype, local_map);
             // If the RHS of assignment is none, then the assignment can't actually happen,
             // so we are just executing the RHS for its side-effects.
-            if expr2.vartype.is_none() {
+            match expr2.vartype {
+                None=> {
                 let expr_tmp = std::mem::replace(&mut **expr2, dummy_expr());
                 *expr = expr_tmp;
-                true
-            } else {
+                true}
+            Some(vartype) => {
+                if let Ok(variable_ref) = (&*target).try_into() {
+                    var_ctx.update_variable(variable_ref, vartype, (&**expr2).try_into());
+                }
                 // the return type of Assign is Undefined, so we don't need to change it
                 ret
-            }
+            }}
         }
         ExprKind::Return { expr: expr2 } => {
             assert!(expr.vartype == None);

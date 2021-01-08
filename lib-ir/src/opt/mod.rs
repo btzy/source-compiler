@@ -1,5 +1,6 @@
 mod inline;
 mod landing_context;
+mod var_context;
 mod propagate;
 mod relabeller;
 mod typecast;

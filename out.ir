@@ -1,0 +1,2222 @@
+Program {
+    struct_types: [
+        [],
+    ],
+    imports: [],
+    funcs: [
+        Func {
+            params: [
+                Number,
+            ],
+            result: Some(
+                Number,
+            ),
+            expr: Expr {
+                vartype: Some(
+                    Number,
+                ),
+                kind: PrimAppl {
+                    prim_inst: NumberNegate,
+                    args: [
+                        Expr {
+                            vartype: Some(
+                                Number,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 0,
+                                    next: None,
+                                },
+                            },
+                        },
+                    ],
+                },
+            },
+            signature_filter: [],
+        },
+        Func {
+            params: [
+                Boolean,
+            ],
+            result: Some(
+                Boolean,
+            ),
+            expr: Expr {
+                vartype: Some(
+                    Boolean,
+                ),
+                kind: PrimAppl {
+                    prim_inst: BooleanNot,
+                    args: [
+                        Expr {
+                            vartype: Some(
+                                Boolean,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 0,
+                                    next: None,
+                                },
+                            },
+                        },
+                    ],
+                },
+            },
+            signature_filter: [],
+        },
+        Func {
+            params: [
+                Boolean,
+                Boolean,
+            ],
+            result: Some(
+                Boolean,
+            ),
+            expr: Expr {
+                vartype: Some(
+                    Boolean,
+                ),
+                kind: PrimAppl {
+                    prim_inst: BooleanAnd,
+                    args: [
+                        Expr {
+                            vartype: Some(
+                                Boolean,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 0,
+                                    next: None,
+                                },
+                            },
+                        },
+                        Expr {
+                            vartype: Some(
+                                Boolean,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 1,
+                                    next: None,
+                                },
+                            },
+                        },
+                    ],
+                },
+            },
+            signature_filter: [],
+        },
+        Func {
+            params: [
+                Boolean,
+                Boolean,
+            ],
+            result: Some(
+                Boolean,
+            ),
+            expr: Expr {
+                vartype: Some(
+                    Boolean,
+                ),
+                kind: PrimAppl {
+                    prim_inst: BooleanOr,
+                    args: [
+                        Expr {
+                            vartype: Some(
+                                Boolean,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 0,
+                                    next: None,
+                                },
+                            },
+                        },
+                        Expr {
+                            vartype: Some(
+                                Boolean,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 1,
+                                    next: None,
+                                },
+                            },
+                        },
+                    ],
+                },
+            },
+            signature_filter: [],
+        },
+        Func {
+            params: [
+                Number,
+                Number,
+            ],
+            result: Some(
+                Number,
+            ),
+            expr: Expr {
+                vartype: Some(
+                    Number,
+                ),
+                kind: PrimAppl {
+                    prim_inst: NumberSub,
+                    args: [
+                        Expr {
+                            vartype: Some(
+                                Number,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 0,
+                                    next: None,
+                                },
+                            },
+                        },
+                        Expr {
+                            vartype: Some(
+                                Number,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 1,
+                                    next: None,
+                                },
+                            },
+                        },
+                    ],
+                },
+            },
+            signature_filter: [],
+        },
+        Func {
+            params: [
+                Number,
+                Number,
+            ],
+            result: Some(
+                Number,
+            ),
+            expr: Expr {
+                vartype: Some(
+                    Number,
+                ),
+                kind: PrimAppl {
+                    prim_inst: NumberMul,
+                    args: [
+                        Expr {
+                            vartype: Some(
+                                Number,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 0,
+                                    next: None,
+                                },
+                            },
+                        },
+                        Expr {
+                            vartype: Some(
+                                Number,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 1,
+                                    next: None,
+                                },
+                            },
+                        },
+                    ],
+                },
+            },
+            signature_filter: [],
+        },
+        Func {
+            params: [
+                Number,
+                Number,
+            ],
+            result: Some(
+                Number,
+            ),
+            expr: Expr {
+                vartype: Some(
+                    Number,
+                ),
+                kind: PrimAppl {
+                    prim_inst: NumberDiv,
+                    args: [
+                        Expr {
+                            vartype: Some(
+                                Number,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 0,
+                                    next: None,
+                                },
+                            },
+                        },
+                        Expr {
+                            vartype: Some(
+                                Number,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 1,
+                                    next: None,
+                                },
+                            },
+                        },
+                    ],
+                },
+            },
+            signature_filter: [],
+        },
+        Func {
+            params: [
+                Number,
+                Number,
+            ],
+            result: Some(
+                Number,
+            ),
+            expr: Expr {
+                vartype: Some(
+                    Number,
+                ),
+                kind: PrimAppl {
+                    prim_inst: NumberRem,
+                    args: [
+                        Expr {
+                            vartype: Some(
+                                Number,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 0,
+                                    next: None,
+                                },
+                            },
+                        },
+                        Expr {
+                            vartype: Some(
+                                Number,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 1,
+                                    next: None,
+                                },
+                            },
+                        },
+                    ],
+                },
+            },
+            signature_filter: [],
+        },
+        Func {
+            params: [],
+            result: Some(
+                Undefined,
+            ),
+            expr: Expr {
+                vartype: Some(
+                    Undefined,
+                ),
+                kind: PrimUndefined,
+            },
+            signature_filter: [],
+        },
+        Func {
+            params: [],
+            result: Some(
+                Undefined,
+            ),
+            expr: Expr {
+                vartype: Some(
+                    Undefined,
+                ),
+                kind: PrimUndefined,
+            },
+            signature_filter: [],
+        },
+        Func {
+            params: [
+                Number,
+                Number,
+            ],
+            result: Some(
+                Boolean,
+            ),
+            expr: Expr {
+                vartype: Some(
+                    Boolean,
+                ),
+                kind: PrimAppl {
+                    prim_inst: NumberLt,
+                    args: [
+                        Expr {
+                            vartype: Some(
+                                Number,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 0,
+                                    next: None,
+                                },
+                            },
+                        },
+                        Expr {
+                            vartype: Some(
+                                Number,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 1,
+                                    next: None,
+                                },
+                            },
+                        },
+                    ],
+                },
+            },
+            signature_filter: [],
+        },
+        Func {
+            params: [
+                String,
+                String,
+            ],
+            result: Some(
+                Boolean,
+            ),
+            expr: Expr {
+                vartype: Some(
+                    Boolean,
+                ),
+                kind: PrimAppl {
+                    prim_inst: StringLt,
+                    args: [
+                        Expr {
+                            vartype: Some(
+                                String,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 0,
+                                    next: None,
+                                },
+                            },
+                        },
+                        Expr {
+                            vartype: Some(
+                                String,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 1,
+                                    next: None,
+                                },
+                            },
+                        },
+                    ],
+                },
+            },
+            signature_filter: [],
+        },
+        Func {
+            params: [
+                Number,
+                Number,
+            ],
+            result: Some(
+                Boolean,
+            ),
+            expr: Expr {
+                vartype: Some(
+                    Boolean,
+                ),
+                kind: PrimAppl {
+                    prim_inst: NumberLe,
+                    args: [
+                        Expr {
+                            vartype: Some(
+                                Number,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 0,
+                                    next: None,
+                                },
+                            },
+                        },
+                        Expr {
+                            vartype: Some(
+                                Number,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 1,
+                                    next: None,
+                                },
+                            },
+                        },
+                    ],
+                },
+            },
+            signature_filter: [],
+        },
+        Func {
+            params: [
+                String,
+                String,
+            ],
+            result: Some(
+                Boolean,
+            ),
+            expr: Expr {
+                vartype: Some(
+                    Boolean,
+                ),
+                kind: PrimAppl {
+                    prim_inst: StringLe,
+                    args: [
+                        Expr {
+                            vartype: Some(
+                                String,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 0,
+                                    next: None,
+                                },
+                            },
+                        },
+                        Expr {
+                            vartype: Some(
+                                String,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 1,
+                                    next: None,
+                                },
+                            },
+                        },
+                    ],
+                },
+            },
+            signature_filter: [],
+        },
+        Func {
+            params: [
+                Number,
+                Number,
+            ],
+            result: Some(
+                Boolean,
+            ),
+            expr: Expr {
+                vartype: Some(
+                    Boolean,
+                ),
+                kind: PrimAppl {
+                    prim_inst: NumberGt,
+                    args: [
+                        Expr {
+                            vartype: Some(
+                                Number,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 0,
+                                    next: None,
+                                },
+                            },
+                        },
+                        Expr {
+                            vartype: Some(
+                                Number,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 1,
+                                    next: None,
+                                },
+                            },
+                        },
+                    ],
+                },
+            },
+            signature_filter: [],
+        },
+        Func {
+            params: [
+                String,
+                String,
+            ],
+            result: Some(
+                Boolean,
+            ),
+            expr: Expr {
+                vartype: Some(
+                    Boolean,
+                ),
+                kind: PrimAppl {
+                    prim_inst: StringGt,
+                    args: [
+                        Expr {
+                            vartype: Some(
+                                String,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 0,
+                                    next: None,
+                                },
+                            },
+                        },
+                        Expr {
+                            vartype: Some(
+                                String,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 1,
+                                    next: None,
+                                },
+                            },
+                        },
+                    ],
+                },
+            },
+            signature_filter: [],
+        },
+        Func {
+            params: [
+                Number,
+                Number,
+            ],
+            result: Some(
+                Boolean,
+            ),
+            expr: Expr {
+                vartype: Some(
+                    Boolean,
+                ),
+                kind: PrimAppl {
+                    prim_inst: NumberGe,
+                    args: [
+                        Expr {
+                            vartype: Some(
+                                Number,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 0,
+                                    next: None,
+                                },
+                            },
+                        },
+                        Expr {
+                            vartype: Some(
+                                Number,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 1,
+                                    next: None,
+                                },
+                            },
+                        },
+                    ],
+                },
+            },
+            signature_filter: [],
+        },
+        Func {
+            params: [
+                String,
+                String,
+            ],
+            result: Some(
+                Boolean,
+            ),
+            expr: Expr {
+                vartype: Some(
+                    Boolean,
+                ),
+                kind: PrimAppl {
+                    prim_inst: StringGe,
+                    args: [
+                        Expr {
+                            vartype: Some(
+                                String,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 0,
+                                    next: None,
+                                },
+                            },
+                        },
+                        Expr {
+                            vartype: Some(
+                                String,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 1,
+                                    next: None,
+                                },
+                            },
+                        },
+                    ],
+                },
+            },
+            signature_filter: [],
+        },
+        Func {
+            params: [
+                Undefined,
+                Undefined,
+            ],
+            result: Some(
+                Boolean,
+            ),
+            expr: Expr {
+                vartype: Some(
+                    Boolean,
+                ),
+                kind: PrimBoolean {
+                    val: true,
+                },
+            },
+            signature_filter: [],
+        },
+        Func {
+            params: [],
+            result: Some(
+                Undefined,
+            ),
+            expr: Expr {
+                vartype: Some(
+                    Undefined,
+                ),
+                kind: PrimUndefined,
+            },
+            signature_filter: [],
+        },
+        Func {
+            params: [
+                Boolean,
+                Boolean,
+            ],
+            result: Some(
+                Boolean,
+            ),
+            expr: Expr {
+                vartype: Some(
+                    Boolean,
+                ),
+                kind: PrimAppl {
+                    prim_inst: BooleanEq,
+                    args: [
+                        Expr {
+                            vartype: Some(
+                                Boolean,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 0,
+                                    next: None,
+                                },
+                            },
+                        },
+                        Expr {
+                            vartype: Some(
+                                Boolean,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 1,
+                                    next: None,
+                                },
+                            },
+                        },
+                    ],
+                },
+            },
+            signature_filter: [],
+        },
+        Func {
+            params: [
+                String,
+                String,
+            ],
+            result: Some(
+                Boolean,
+            ),
+            expr: Expr {
+                vartype: Some(
+                    Boolean,
+                ),
+                kind: PrimAppl {
+                    prim_inst: StringEq,
+                    args: [
+                        Expr {
+                            vartype: Some(
+                                String,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 0,
+                                    next: None,
+                                },
+                            },
+                        },
+                        Expr {
+                            vartype: Some(
+                                String,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 1,
+                                    next: None,
+                                },
+                            },
+                        },
+                    ],
+                },
+            },
+            signature_filter: [],
+        },
+        Func {
+            params: [
+                Undefined,
+                Undefined,
+            ],
+            result: Some(
+                Boolean,
+            ),
+            expr: Expr {
+                vartype: Some(
+                    Boolean,
+                ),
+                kind: PrimBoolean {
+                    val: false,
+                },
+            },
+            signature_filter: [],
+        },
+        Func {
+            params: [
+                Number,
+                Number,
+            ],
+            result: Some(
+                Boolean,
+            ),
+            expr: Expr {
+                vartype: Some(
+                    Boolean,
+                ),
+                kind: PrimAppl {
+                    prim_inst: NumberNeq,
+                    args: [
+                        Expr {
+                            vartype: Some(
+                                Number,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 0,
+                                    next: None,
+                                },
+                            },
+                        },
+                        Expr {
+                            vartype: Some(
+                                Number,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 1,
+                                    next: None,
+                                },
+                            },
+                        },
+                    ],
+                },
+            },
+            signature_filter: [],
+        },
+        Func {
+            params: [
+                Boolean,
+                Boolean,
+            ],
+            result: Some(
+                Boolean,
+            ),
+            expr: Expr {
+                vartype: Some(
+                    Boolean,
+                ),
+                kind: PrimAppl {
+                    prim_inst: BooleanNeq,
+                    args: [
+                        Expr {
+                            vartype: Some(
+                                Boolean,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 0,
+                                    next: None,
+                                },
+                            },
+                        },
+                        Expr {
+                            vartype: Some(
+                                Boolean,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 1,
+                                    next: None,
+                                },
+                            },
+                        },
+                    ],
+                },
+            },
+            signature_filter: [],
+        },
+        Func {
+            params: [
+                String,
+                String,
+            ],
+            result: Some(
+                Boolean,
+            ),
+            expr: Expr {
+                vartype: Some(
+                    Boolean,
+                ),
+                kind: PrimAppl {
+                    prim_inst: StringNeq,
+                    args: [
+                        Expr {
+                            vartype: Some(
+                                String,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 0,
+                                    next: None,
+                                },
+                            },
+                        },
+                        Expr {
+                            vartype: Some(
+                                String,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 1,
+                                    next: None,
+                                },
+                            },
+                        },
+                    ],
+                },
+            },
+            signature_filter: [],
+        },
+        Func {
+            params: [
+                StructT {
+                    typeidx: 0,
+                },
+                Any,
+            ],
+            result: Some(
+                Any,
+            ),
+            expr: Expr {
+                vartype: None,
+                kind: Declaration {
+                    local: Any,
+                    init: Some(
+                        Expr {
+                            vartype: Some(
+                                Any,
+                            ),
+                            kind: VarName {
+                                source: Local {
+                                    localidx: 1,
+                                    next: None,
+                                },
+                            },
+                        },
+                    ),
+                    contained_expr: Expr {
+                        vartype: None,
+                        kind: Return {
+                            expr: Expr {
+                                vartype: Some(
+                                    Any,
+                                ),
+                                kind: Conditional {
+                                    cond: Expr {
+                                        vartype: Some(
+                                            Boolean,
+                                        ),
+                                        kind: Declaration {
+                                            local: Boolean,
+                                            init: Some(
+                                                Expr {
+                                                    vartype: Some(
+                                                        Boolean,
+                                                    ),
+                                                    kind: Block {
+                                                        expr: Expr {
+                                                            vartype: None,
+                                                            kind: Declaration {
+                                                                local: Undefined,
+                                                                init: Some(
+                                                                    Expr {
+                                                                        vartype: Some(
+                                                                            Undefined,
+                                                                        ),
+                                                                        kind: PrimUndefined,
+                                                                    },
+                                                                ),
+                                                                contained_expr: Expr {
+                                                                    vartype: None,
+                                                                    kind: Declaration {
+                                                                        local: Any,
+                                                                        init: Some(
+                                                                            Expr {
+                                                                                vartype: Some(
+                                                                                    Any,
+                                                                                ),
+                                                                                kind: VarName {
+                                                                                    source: Local {
+                                                                                        localidx: 2,
+                                                                                        next: None,
+                                                                                    },
+                                                                                },
+                                                                            },
+                                                                        ),
+                                                                        contained_expr: Expr {
+                                                                            vartype: None,
+                                                                            kind: Declaration {
+                                                                                local: Number,
+                                                                                init: Some(
+                                                                                    Expr {
+                                                                                        vartype: Some(
+                                                                                            Number,
+                                                                                        ),
+                                                                                        kind: PrimNumber {
+                                                                                            val: 0.0,
+                                                                                        },
+                                                                                    },
+                                                                                ),
+                                                                                contained_expr: Expr {
+                                                                                    vartype: None,
+                                                                                    kind: Sequence {
+                                                                                        content: [
+                                                                                            Expr {
+                                                                                                vartype: Some(
+                                                                                                    Undefined,
+                                                                                                ),
+                                                                                                kind: TypeCast {
+                                                                                                    test: Expr {
+                                                                                                        vartype: Some(
+                                                                                                            Any,
+                                                                                                        ),
+                                                                                                        kind: VarName {
+                                                                                                            source: Local {
+                                                                                                                localidx: 4,
+                                                                                                                next: None,
+                                                                                                            },
+                                                                                                        },
+                                                                                                    },
+                                                                                                    expected: Number,
+                                                                                                    create_narrow_local: true,
+                                                                                                    true_expr: Expr {
+                                                                                                        vartype: None,
+                                                                                                        kind: Break {
+                                                                                                            num_frames: 0,
+                                                                                                            expr: Expr {
+                                                                                                                vartype: Some(
+                                                                                                                    Boolean,
+                                                                                                                ),
+                                                                                                                kind: Declaration {
+                                                                                                                    local: Number,
+                                                                                                                    init: Some(
+                                                                                                                        Expr {
+                                                                                                                            vartype: Some(
+                                                                                                                                Number,
+                                                                                                                            ),
+                                                                                                                            kind: VarName {
+                                                                                                                                source: Local {
+                                                                                                                                    localidx: 6,
+                                                                                                                                    next: None,
+                                                                                                                                },
+                                                                                                                            },
+                                                                                                                        },
+                                                                                                                    ),
+                                                                                                                    contained_expr: Expr {
+                                                                                                                        vartype: Some(
+                                                                                                                            Boolean,
+                                                                                                                        ),
+                                                                                                                        kind: Declaration {
+                                                                                                                            local: Number,
+                                                                                                                            init: Some(
+                                                                                                                                Expr {
+                                                                                                                                    vartype: Some(
+                                                                                                                                        Number,
+                                                                                                                                    ),
+                                                                                                                                    kind: VarName {
+                                                                                                                                        source: Local {
+                                                                                                                                            localidx: 5,
+                                                                                                                                            next: None,
+                                                                                                                                        },
+                                                                                                                                    },
+                                                                                                                                },
+                                                                                                                            ),
+                                                                                                                            contained_expr: Expr {
+                                                                                                                                vartype: Some(
+                                                                                                                                    Boolean,
+                                                                                                                                ),
+                                                                                                                                kind: Block {
+                                                                                                                                    expr: Expr {
+                                                                                                                                        vartype: Some(
+                                                                                                                                            Boolean,
+                                                                                                                                        ),
+                                                                                                                                        kind: PrimAppl {
+                                                                                                                                            prim_inst: NumberEq,
+                                                                                                                                            args: [
+                                                                                                                                                Expr {
+                                                                                                                                                    vartype: Some(
+                                                                                                                                                        Number,
+                                                                                                                                                    ),
+                                                                                                                                                    kind: VarName {
+                                                                                                                                                        source: Local {
+                                                                                                                                                            localidx: 7,
+                                                                                                                                                            next: None,
+                                                                                                                                                        },
+                                                                                                                                                    },
+                                                                                                                                                },
+                                                                                                                                                Expr {
+                                                                                                                                                    vartype: Some(
+                                                                                                                                                        Number,
+                                                                                                                                                    ),
+                                                                                                                                                    kind: VarName {
+                                                                                                                                                        source: Local {
+                                                                                                                                                            localidx: 8,
+                                                                                                                                                            next: None,
+                                                                                                                                                        },
+                                                                                                                                                    },
+                                                                                                                                                },
+                                                                                                                                            ],
+                                                                                                                                        },
+                                                                                                                                    },
+                                                                                                                                },
+                                                                                                                            },
+                                                                                                                        },
+                                                                                                                    },
+                                                                                                                },
+                                                                                                            },
+                                                                                                        },
+                                                                                                    },
+                                                                                                    false_expr: Expr {
+                                                                                                        vartype: Some(
+                                                                                                            Undefined,
+                                                                                                        ),
+                                                                                                        kind: PrimUndefined,
+                                                                                                    },
+                                                                                                },
+                                                                                            },
+                                                                                            Expr {
+                                                                                                vartype: None,
+                                                                                                kind: Trap {
+                                                                                                    code: 17,
+                                                                                                    location: SourceLocation {
+                                                                                                        file: 0,
+                                                                                                        start: Position {
+                                                                                                            line: 2,
+                                                                                                            column: 11,
+                                                                                                        },
+                                                                                                        end: Position {
+                                                                                                            line: 2,
+                                                                                                            column: 18,
+                                                                                                        },
+                                                                                                    },
+                                                                                                },
+                                                                                            },
+                                                                                        ],
+                                                                                    },
+                                                                                },
+                                                                            },
+                                                                        },
+                                                                    },
+                                                                },
+                                                            },
+                                                        },
+                                                    },
+                                                },
+                                            ),
+                                            contained_expr: Expr {
+                                                vartype: Some(
+                                                    Boolean,
+                                                ),
+                                                kind: VarName {
+                                                    source: Local {
+                                                        localidx: 3,
+                                                        next: None,
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    },
+                                    true_expr: Expr {
+                                        vartype: Some(
+                                            Number,
+                                        ),
+                                        kind: PrimNumber {
+                                            val: 1.0,
+                                        },
+                                    },
+                                    false_expr: Expr {
+                                        vartype: Some(
+                                            Any,
+                                        ),
+                                        kind: Block {
+                                            expr: Expr {
+                                                vartype: None,
+                                                kind: Declaration {
+                                                    local: Undefined,
+                                                    init: Some(
+                                                        Expr {
+                                                            vartype: Some(
+                                                                Undefined,
+                                                            ),
+                                                            kind: PrimUndefined,
+                                                        },
+                                                    ),
+                                                    contained_expr: Expr {
+                                                        vartype: None,
+                                                        kind: Declaration {
+                                                            local: Any,
+                                                            init: Some(
+                                                                Expr {
+                                                                    vartype: Some(
+                                                                        Any,
+                                                                    ),
+                                                                    kind: Appl {
+                                                                        func: Expr {
+                                                                            vartype: Some(
+                                                                                Func,
+                                                                            ),
+                                                                            kind: TypeCast {
+                                                                                test: Expr {
+                                                                                    vartype: Some(
+                                                                                        Any,
+                                                                                    ),
+                                                                                    kind: VarName {
+                                                                                        source: Global {
+                                                                                            globalidx: 0,
+                                                                                            next: None,
+                                                                                        },
+                                                                                    },
+                                                                                },
+                                                                                expected: Func,
+                                                                                create_narrow_local: true,
+                                                                                true_expr: Expr {
+                                                                                    vartype: Some(
+                                                                                        Func,
+                                                                                    ),
+                                                                                    kind: VarName {
+                                                                                        source: Local {
+                                                                                            localidx: 4,
+                                                                                            next: None,
+                                                                                        },
+                                                                                    },
+                                                                                },
+                                                                                false_expr: Expr {
+                                                                                    vartype: None,
+                                                                                    kind: Trap {
+                                                                                        code: 22,
+                                                                                        location: SourceLocation {
+                                                                                            file: 0,
+                                                                                            start: Position {
+                                                                                                line: 2,
+                                                                                                column: 25,
+                                                                                            },
+                                                                                            end: Position {
+                                                                                                line: 2,
+                                                                                                column: 26,
+                                                                                            },
+                                                                                        },
+                                                                                    },
+                                                                                },
+                                                                            },
+                                                                        },
+                                                                        args: [
+                                                                            Expr {
+                                                                                vartype: Some(
+                                                                                    Number,
+                                                                                ),
+                                                                                kind: Block {
+                                                                                    expr: Expr {
+                                                                                        vartype: None,
+                                                                                        kind: Declaration {
+                                                                                            local: Undefined,
+                                                                                            init: Some(
+                                                                                                Expr {
+                                                                                                    vartype: Some(
+                                                                                                        Undefined,
+                                                                                                    ),
+                                                                                                    kind: PrimUndefined,
+                                                                                                },
+                                                                                            ),
+                                                                                            contained_expr: Expr {
+                                                                                                vartype: None,
+                                                                                                kind: Declaration {
+                                                                                                    local: Any,
+                                                                                                    init: Some(
+                                                                                                        Expr {
+                                                                                                            vartype: Some(
+                                                                                                                Any,
+                                                                                                            ),
+                                                                                                            kind: VarName {
+                                                                                                                source: Local {
+                                                                                                                    localidx: 2,
+                                                                                                                    next: None,
+                                                                                                                },
+                                                                                                            },
+                                                                                                        },
+                                                                                                    ),
+                                                                                                    contained_expr: Expr {
+                                                                                                        vartype: None,
+                                                                                                        kind: Declaration {
+                                                                                                            local: Number,
+                                                                                                            init: Some(
+                                                                                                                Expr {
+                                                                                                                    vartype: Some(
+                                                                                                                        Number,
+                                                                                                                    ),
+                                                                                                                    kind: PrimNumber {
+                                                                                                                        val: 1.0,
+                                                                                                                    },
+                                                                                                                },
+                                                                                                            ),
+                                                                                                            contained_expr: Expr {
+                                                                                                                vartype: None,
+                                                                                                                kind: Sequence {
+                                                                                                                    content: [
+                                                                                                                        Expr {
+                                                                                                                            vartype: Some(
+                                                                                                                                Undefined,
+                                                                                                                            ),
+                                                                                                                            kind: TypeCast {
+                                                                                                                                test: Expr {
+                                                                                                                                    vartype: Some(
+                                                                                                                                        Any,
+                                                                                                                                    ),
+                                                                                                                                    kind: VarName {
+                                                                                                                                        source: Local {
+                                                                                                                                            localidx: 5,
+                                                                                                                                            next: None,
+                                                                                                                                        },
+                                                                                                                                    },
+                                                                                                                                },
+                                                                                                                                expected: Number,
+                                                                                                                                create_narrow_local: true,
+                                                                                                                                true_expr: Expr {
+                                                                                                                                    vartype: None,
+                                                                                                                                    kind: Break {
+                                                                                                                                        num_frames: 0,
+                                                                                                                                        expr: Expr {
+                                                                                                                                            vartype: Some(
+                                                                                                                                                Number,
+                                                                                                                                            ),
+                                                                                                                                            kind: Declaration {
+                                                                                                                                                local: Number,
+                                                                                                                                                init: Some(
+                                                                                                                                                    Expr {
+                                                                                                                                                        vartype: Some(
+                                                                                                                                                            Number,
+                                                                                                                                                        ),
+                                                                                                                                                        kind: VarName {
+                                                                                                                                                            source: Local {
+                                                                                                                                                                localidx: 7,
+                                                                                                                                                                next: None,
+                                                                                                                                                            },
+                                                                                                                                                        },
+                                                                                                                                                    },
+                                                                                                                                                ),
+                                                                                                                                                contained_expr: Expr {
+                                                                                                                                                    vartype: Some(
+                                                                                                                                                        Number,
+                                                                                                                                                    ),
+                                                                                                                                                    kind: Declaration {
+                                                                                                                                                        local: Number,
+                                                                                                                                                        init: Some(
+                                                                                                                                                            Expr {
+                                                                                                                                                                vartype: Some(
+                                                                                                                                                                    Number,
+                                                                                                                                                                ),
+                                                                                                                                                                kind: VarName {
+                                                                                                                                                                    source: Local {
+                                                                                                                                                                        localidx: 6,
+                                                                                                                                                                        next: None,
+                                                                                                                                                                    },
+                                                                                                                                                                },
+                                                                                                                                                            },
+                                                                                                                                                        ),
+                                                                                                                                                        contained_expr: Expr {
+                                                                                                                                                            vartype: Some(
+                                                                                                                                                                Number,
+                                                                                                                                                            ),
+                                                                                                                                                            kind: Block {
+                                                                                                                                                                expr: Expr {
+                                                                                                                                                                    vartype: Some(
+                                                                                                                                                                        Number,
+                                                                                                                                                                    ),
+                                                                                                                                                                    kind: PrimAppl {
+                                                                                                                                                                        prim_inst: NumberSub,
+                                                                                                                                                                        args: [
+                                                                                                                                                                            Expr {
+                                                                                                                                                                                vartype: Some(
+                                                                                                                                                                                    Number,
+                                                                                                                                                                                ),
+                                                                                                                                                                                kind: VarName {
+                                                                                                                                                                                    source: Local {
+                                                                                                                                                                                        localidx: 8,
+                                                                                                                                                                                        next: None,
+                                                                                                                                                                                    },
+                                                                                                                                                                                },
+                                                                                                                                                                            },
+                                                                                                                                                                            Expr {
+                                                                                                                                                                                vartype: Some(
+                                                                                                                                                                                    Number,
+                                                                                                                                                                                ),
+                                                                                                                                                                                kind: VarName {
+                                                                                                                                                                                    source: Local {
+                                                                                                                                                                                        localidx: 9,
+                                                                                                                                                                                        next: None,
+                                                                                                                                                                                    },
+                                                                                                                                                                                },
+                                                                                                                                                                            },
+                                                                                                                                                                        ],
+                                                                                                                                                                    },
+                                                                                                                                                                },
+                                                                                                                                                            },
+                                                                                                                                                        },
+                                                                                                                                                    },
+                                                                                                                                                },
+                                                                                                                                            },
+                                                                                                                                        },
+                                                                                                                                    },
+                                                                                                                                },
+                                                                                                                                false_expr: Expr {
+                                                                                                                                    vartype: Some(
+                                                                                                                                        Undefined,
+                                                                                                                                    ),
+                                                                                                                                    kind: PrimUndefined,
+                                                                                                                                },
+                                                                                                                            },
+                                                                                                                        },
+                                                                                                                        Expr {
+                                                                                                                            vartype: None,
+                                                                                                                            kind: Trap {
+                                                                                                                                code: 17,
+                                                                                                                                location: SourceLocation {
+                                                                                                                                    file: 0,
+                                                                                                                                    start: Position {
+                                                                                                                                        line: 2,
+                                                                                                                                        column: 27,
+                                                                                                                                    },
+                                                                                                                                    end: Position {
+                                                                                                                                        line: 2,
+                                                                                                                                        column: 30,
+                                                                                                                                    },
+                                                                                                                                },
+                                                                                                                            },
+                                                                                                                        },
+                                                                                                                    ],
+                                                                                                                },
+                                                                                                            },
+                                                                                                        },
+                                                                                                    },
+                                                                                                },
+                                                                                            },
+                                                                                        },
+                                                                                    },
+                                                                                },
+                                                                            },
+                                                                        ],
+                                                                        location: SourceLocation {
+                                                                            file: 0,
+                                                                            start: Position {
+                                                                                line: 2,
+                                                                                column: 25,
+                                                                            },
+                                                                            end: Position {
+                                                                                line: 2,
+                                                                                column: 31,
+                                                                            },
+                                                                        },
+                                                                    },
+                                                                },
+                                                            ),
+                                                            contained_expr: Expr {
+                                                                vartype: None,
+                                                                kind: Declaration {
+                                                                    local: Any,
+                                                                    init: Some(
+                                                                        Expr {
+                                                                            vartype: Some(
+                                                                                Any,
+                                                                            ),
+                                                                            kind: Appl {
+                                                                                func: Expr {
+                                                                                    vartype: Some(
+                                                                                        Func,
+                                                                                    ),
+                                                                                    kind: TypeCast {
+                                                                                        test: Expr {
+                                                                                            vartype: Some(
+                                                                                                Any,
+                                                                                            ),
+                                                                                            kind: VarName {
+                                                                                                source: Global {
+                                                                                                    globalidx: 0,
+                                                                                                    next: None,
+                                                                                                },
+                                                                                            },
+                                                                                        },
+                                                                                        expected: Func,
+                                                                                        create_narrow_local: true,
+                                                                                        true_expr: Expr {
+                                                                                            vartype: Some(
+                                                                                                Func,
+                                                                                            ),
+                                                                                            kind: VarName {
+                                                                                                source: Local {
+                                                                                                    localidx: 5,
+                                                                                                    next: None,
+                                                                                                },
+                                                                                            },
+                                                                                        },
+                                                                                        false_expr: Expr {
+                                                                                            vartype: None,
+                                                                                            kind: Trap {
+                                                                                                code: 22,
+                                                                                                location: SourceLocation {
+                                                                                                    file: 0,
+                                                                                                    start: Position {
+                                                                                                        line: 2,
+                                                                                                        column: 34,
+                                                                                                    },
+                                                                                                    end: Position {
+                                                                                                        line: 2,
+                                                                                                        column: 35,
+                                                                                                    },
+                                                                                                },
+                                                                                            },
+                                                                                        },
+                                                                                    },
+                                                                                },
+                                                                                args: [
+                                                                                    Expr {
+                                                                                        vartype: Some(
+                                                                                            Number,
+                                                                                        ),
+                                                                                        kind: Block {
+                                                                                            expr: Expr {
+                                                                                                vartype: None,
+                                                                                                kind: Declaration {
+                                                                                                    local: Undefined,
+                                                                                                    init: Some(
+                                                                                                        Expr {
+                                                                                                            vartype: Some(
+                                                                                                                Undefined,
+                                                                                                            ),
+                                                                                                            kind: PrimUndefined,
+                                                                                                        },
+                                                                                                    ),
+                                                                                                    contained_expr: Expr {
+                                                                                                        vartype: None,
+                                                                                                        kind: Declaration {
+                                                                                                            local: Any,
+                                                                                                            init: Some(
+                                                                                                                Expr {
+                                                                                                                    vartype: Some(
+                                                                                                                        Any,
+                                                                                                                    ),
+                                                                                                                    kind: VarName {
+                                                                                                                        source: Local {
+                                                                                                                            localidx: 2,
+                                                                                                                            next: None,
+                                                                                                                        },
+                                                                                                                    },
+                                                                                                                },
+                                                                                                            ),
+                                                                                                            contained_expr: Expr {
+                                                                                                                vartype: None,
+                                                                                                                kind: Declaration {
+                                                                                                                    local: Number,
+                                                                                                                    init: Some(
+                                                                                                                        Expr {
+                                                                                                                            vartype: Some(
+                                                                                                                                Number,
+                                                                                                                            ),
+                                                                                                                            kind: PrimNumber {
+                                                                                                                                val: 1.0,
+                                                                                                                            },
+                                                                                                                        },
+                                                                                                                    ),
+                                                                                                                    contained_expr: Expr {
+                                                                                                                        vartype: None,
+                                                                                                                        kind: Sequence {
+                                                                                                                            content: [
+                                                                                                                                Expr {
+                                                                                                                                    vartype: Some(
+                                                                                                                                        Undefined,
+                                                                                                                                    ),
+                                                                                                                                    kind: TypeCast {
+                                                                                                                                        test: Expr {
+                                                                                                                                            vartype: Some(
+                                                                                                                                                Any,
+                                                                                                                                            ),
+                                                                                                                                            kind: VarName {
+                                                                                                                                                source: Local {
+                                                                                                                                                    localidx: 6,
+                                                                                                                                                    next: None,
+                                                                                                                                                },
+                                                                                                                                            },
+                                                                                                                                        },
+                                                                                                                                        expected: Number,
+                                                                                                                                        create_narrow_local: true,
+                                                                                                                                        true_expr: Expr {
+                                                                                                                                            vartype: None,
+                                                                                                                                            kind: Break {
+                                                                                                                                                num_frames: 0,
+                                                                                                                                                expr: Expr {
+                                                                                                                                                    vartype: Some(
+                                                                                                                                                        Number,
+                                                                                                                                                    ),
+                                                                                                                                                    kind: Declaration {
+                                                                                                                                                        local: Number,
+                                                                                                                                                        init: Some(
+                                                                                                                                                            Expr {
+                                                                                                                                                                vartype: Some(
+                                                                                                                                                                    Number,
+                                                                                                                                                                ),
+                                                                                                                                                                kind: VarName {
+                                                                                                                                                                    source: Local {
+                                                                                                                                                                        localidx: 8,
+                                                                                                                                                                        next: None,
+                                                                                                                                                                    },
+                                                                                                                                                                },
+                                                                                                                                                            },
+                                                                                                                                                        ),
+                                                                                                                                                        contained_expr: Expr {
+                                                                                                                                                            vartype: Some(
+                                                                                                                                                                Number,
+                                                                                                                                                            ),
+                                                                                                                                                            kind: Declaration {
+                                                                                                                                                                local: Number,
+                                                                                                                                                                init: Some(
+                                                                                                                                                                    Expr {
+                                                                                                                                                                        vartype: Some(
+                                                                                                                                                                            Number,
+                                                                                                                                                                        ),
+                                                                                                                                                                        kind: VarName {
+                                                                                                                                                                            source: Local {
+                                                                                                                                                                                localidx: 7,
+                                                                                                                                                                                next: None,
+                                                                                                                                                                            },
+                                                                                                                                                                        },
+                                                                                                                                                                    },
+                                                                                                                                                                ),
+                                                                                                                                                                contained_expr: Expr {
+                                                                                                                                                                    vartype: Some(
+                                                                                                                                                                        Number,
+                                                                                                                                                                    ),
+                                                                                                                                                                    kind: Block {
+                                                                                                                                                                        expr: Expr {
+                                                                                                                                                                            vartype: Some(
+                                                                                                                                                                                Number,
+                                                                                                                                                                            ),
+                                                                                                                                                                            kind: PrimAppl {
+                                                                                                                                                                                prim_inst: NumberSub,
+                                                                                                                                                                                args: [
+                                                                                                                                                                                    Expr {
+                                                                                                                                                                                        vartype: Some(
+                                                                                                                                                                                            Number,
+                                                                                                                                                                                        ),
+                                                                                                                                                                                        kind: VarName {
+                                                                                                                                                                                            source: Local {
+                                                                                                                                                                                                localidx: 9,
+                                                                                                                                                                                                next: None,
+                                                                                                                                                                                            },
+                                                                                                                                                                                        },
+                                                                                                                                                                                    },
+                                                                                                                                                                                    Expr {
+                                                                                                                                                                                        vartype: Some(
+                                                                                                                                                                                            Number,
+                                                                                                                                                                                        ),
+                                                                                                                                                                                        kind: VarName {
+                                                                                                                                                                                            source: Local {
+                                                                                                                                                                                                localidx: 10,
+                                                                                                                                                                                                next: None,
+                                                                                                                                                                                            },
+                                                                                                                                                                                        },
+                                                                                                                                                                                    },
+                                                                                                                                                                                ],
+                                                                                                                                                                            },
+                                                                                                                                                                        },
+                                                                                                                                                                    },
+                                                                                                                                                                },
+                                                                                                                                                            },
+                                                                                                                                                        },
+                                                                                                                                                    },
+                                                                                                                                                },
+                                                                                                                                            },
+                                                                                                                                        },
+                                                                                                                                        false_expr: Expr {
+                                                                                                                                            vartype: Some(
+                                                                                                                                                Undefined,
+                                                                                                                                            ),
+                                                                                                                                            kind: PrimUndefined,
+                                                                                                                                        },
+                                                                                                                                    },
+                                                                                                                                },
+                                                                                                                                Expr {
+                                                                                                                                    vartype: None,
+                                                                                                                                    kind: Trap {
+                                                                                                                                        code: 17,
+                                                                                                                                        location: SourceLocation {
+                                                                                                                                            file: 0,
+                                                                                                                                            start: Position {
+                                                                                                                                                line: 2,
+                                                                                                                                                column: 36,
+                                                                                                                                            },
+                                                                                                                                            end: Position {
+                                                                                                                                                line: 2,
+                                                                                                                                                column: 39,
+                                                                                                                                            },
+                                                                                                                                        },
+                                                                                                                                    },
+                                                                                                                                },
+                                                                                                                            ],
+                                                                                                                        },
+                                                                                                                    },
+                                                                                                                },
+                                                                                                            },
+                                                                                                        },
+                                                                                                    },
+                                                                                                },
+                                                                                            },
+                                                                                        },
+                                                                                    },
+                                                                                ],
+                                                                                location: SourceLocation {
+                                                                                    file: 0,
+                                                                                    start: Position {
+                                                                                        line: 2,
+                                                                                        column: 34,
+                                                                                    },
+                                                                                    end: Position {
+                                                                                        line: 2,
+                                                                                        column: 40,
+                                                                                    },
+                                                                                },
+                                                                            },
+                                                                        },
+                                                                    ),
+                                                                    contained_expr: Expr {
+                                                                        vartype: None,
+                                                                        kind: Sequence {
+                                                                            content: [
+                                                                                Expr {
+                                                                                    vartype: Some(
+                                                                                        Undefined,
+                                                                                    ),
+                                                                                    kind: TypeCast {
+                                                                                        test: Expr {
+                                                                                            vartype: Some(
+                                                                                                Any,
+                                                                                            ),
+                                                                                            kind: VarName {
+                                                                                                source: Local {
+                                                                                                    localidx: 4,
+                                                                                                    next: None,
+                                                                                                },
+                                                                                            },
+                                                                                        },
+                                                                                        expected: Number,
+                                                                                        create_narrow_local: true,
+                                                                                        true_expr: Expr {
+                                                                                            vartype: Some(
+                                                                                                Undefined,
+                                                                                            ),
+                                                                                            kind: TypeCast {
+                                                                                                test: Expr {
+                                                                                                    vartype: Some(
+                                                                                                        Any,
+                                                                                                    ),
+                                                                                                    kind: VarName {
+                                                                                                        source: Local {
+                                                                                                            localidx: 5,
+                                                                                                            next: None,
+                                                                                                        },
+                                                                                                    },
+                                                                                                },
+                                                                                                expected: Number,
+                                                                                                create_narrow_local: true,
+                                                                                                true_expr: Expr {
+                                                                                                    vartype: None,
+                                                                                                    kind: Break {
+                                                                                                        num_frames: 0,
+                                                                                                        expr: Expr {
+                                                                                                            vartype: Some(
+                                                                                                                Number,
+                                                                                                            ),
+                                                                                                            kind: Declaration {
+                                                                                                                local: Number,
+                                                                                                                init: Some(
+                                                                                                                    Expr {
+                                                                                                                        vartype: Some(
+                                                                                                                            Number,
+                                                                                                                        ),
+                                                                                                                        kind: VarName {
+                                                                                                                            source: Local {
+                                                                                                                                localidx: 6,
+                                                                                                                                next: None,
+                                                                                                                            },
+                                                                                                                        },
+                                                                                                                    },
+                                                                                                                ),
+                                                                                                                contained_expr: Expr {
+                                                                                                                    vartype: Some(
+                                                                                                                        Number,
+                                                                                                                    ),
+                                                                                                                    kind: Declaration {
+                                                                                                                        local: Number,
+                                                                                                                        init: Some(
+                                                                                                                            Expr {
+                                                                                                                                vartype: Some(
+                                                                                                                                    Number,
+                                                                                                                                ),
+                                                                                                                                kind: VarName {
+                                                                                                                                    source: Local {
+                                                                                                                                        localidx: 7,
+                                                                                                                                        next: None,
+                                                                                                                                    },
+                                                                                                                                },
+                                                                                                                            },
+                                                                                                                        ),
+                                                                                                                        contained_expr: Expr {
+                                                                                                                            vartype: Some(
+                                                                                                                                Number,
+                                                                                                                            ),
+                                                                                                                            kind: Block {
+                                                                                                                                expr: Expr {
+                                                                                                                                    vartype: Some(
+                                                                                                                                        Number,
+                                                                                                                                    ),
+                                                                                                                                    kind: PrimAppl {
+                                                                                                                                        prim_inst: NumberAdd,
+                                                                                                                                        args: [
+                                                                                                                                            Expr {
+                                                                                                                                                vartype: Some(
+                                                                                                                                                    Number,
+                                                                                                                                                ),
+                                                                                                                                                kind: VarName {
+                                                                                                                                                    source: Local {
+                                                                                                                                                        localidx: 8,
+                                                                                                                                                        next: None,
+                                                                                                                                                    },
+                                                                                                                                                },
+                                                                                                                                            },
+                                                                                                                                            Expr {
+                                                                                                                                                vartype: Some(
+                                                                                                                                                    Number,
+                                                                                                                                                ),
+                                                                                                                                                kind: VarName {
+                                                                                                                                                    source: Local {
+                                                                                                                                                        localidx: 9,
+                                                                                                                                                        next: None,
+                                                                                                                                                    },
+                                                                                                                                                },
+                                                                                                                                            },
+                                                                                                                                        ],
+                                                                                                                                    },
+                                                                                                                                },
+                                                                                                                            },
+                                                                                                                        },
+                                                                                                                    },
+                                                                                                                },
+                                                                                                            },
+                                                                                                        },
+                                                                                                    },
+                                                                                                },
+                                                                                                false_expr: Expr {
+                                                                                                    vartype: Some(
+                                                                                                        Undefined,
+                                                                                                    ),
+                                                                                                    kind: PrimUndefined,
+                                                                                                },
+                                                                                            },
+                                                                                        },
+                                                                                        false_expr: Expr {
+                                                                                            vartype: Some(
+                                                                                                Undefined,
+                                                                                            ),
+                                                                                            kind: PrimUndefined,
+                                                                                        },
+                                                                                    },
+                                                                                },
+                                                                                Expr {
+                                                                                    vartype: Some(
+                                                                                        Undefined,
+                                                                                    ),
+                                                                                    kind: TypeCast {
+                                                                                        test: Expr {
+                                                                                            vartype: Some(
+                                                                                                Any,
+                                                                                            ),
+                                                                                            kind: VarName {
+                                                                                                source: Local {
+                                                                                                    localidx: 4,
+                                                                                                    next: None,
+                                                                                                },
+                                                                                            },
+                                                                                        },
+                                                                                        expected: String,
+                                                                                        create_narrow_local: true,
+                                                                                        true_expr: Expr {
+                                                                                            vartype: Some(
+                                                                                                Undefined,
+                                                                                            ),
+                                                                                            kind: TypeCast {
+                                                                                                test: Expr {
+                                                                                                    vartype: Some(
+                                                                                                        Any,
+                                                                                                    ),
+                                                                                                    kind: VarName {
+                                                                                                        source: Local {
+                                                                                                            localidx: 5,
+                                                                                                            next: None,
+                                                                                                        },
+                                                                                                    },
+                                                                                                },
+                                                                                                expected: String,
+                                                                                                create_narrow_local: true,
+                                                                                                true_expr: Expr {
+                                                                                                    vartype: None,
+                                                                                                    kind: Break {
+                                                                                                        num_frames: 0,
+                                                                                                        expr: Expr {
+                                                                                                            vartype: Some(
+                                                                                                                String,
+                                                                                                            ),
+                                                                                                            kind: Declaration {
+                                                                                                                local: String,
+                                                                                                                init: Some(
+                                                                                                                    Expr {
+                                                                                                                        vartype: Some(
+                                                                                                                            String,
+                                                                                                                        ),
+                                                                                                                        kind: VarName {
+                                                                                                                            source: Local {
+                                                                                                                                localidx: 6,
+                                                                                                                                next: None,
+                                                                                                                            },
+                                                                                                                        },
+                                                                                                                    },
+                                                                                                                ),
+                                                                                                                contained_expr: Expr {
+                                                                                                                    vartype: Some(
+                                                                                                                        String,
+                                                                                                                    ),
+                                                                                                                    kind: Declaration {
+                                                                                                                        local: String,
+                                                                                                                        init: Some(
+                                                                                                                            Expr {
+                                                                                                                                vartype: Some(
+                                                                                                                                    String,
+                                                                                                                                ),
+                                                                                                                                kind: VarName {
+                                                                                                                                    source: Local {
+                                                                                                                                        localidx: 7,
+                                                                                                                                        next: None,
+                                                                                                                                    },
+                                                                                                                                },
+                                                                                                                            },
+                                                                                                                        ),
+                                                                                                                        contained_expr: Expr {
+                                                                                                                            vartype: Some(
+                                                                                                                                String,
+                                                                                                                            ),
+                                                                                                                            kind: Block {
+                                                                                                                                expr: Expr {
+                                                                                                                                    vartype: Some(
+                                                                                                                                        String,
+                                                                                                                                    ),
+                                                                                                                                    kind: PrimAppl {
+                                                                                                                                        prim_inst: StringAdd,
+                                                                                                                                        args: [
+                                                                                                                                            Expr {
+                                                                                                                                                vartype: Some(
+                                                                                                                                                    String,
+                                                                                                                                                ),
+                                                                                                                                                kind: VarName {
+                                                                                                                                                    source: Local {
+                                                                                                                                                        localidx: 8,
+                                                                                                                                                        next: None,
+                                                                                                                                                    },
+                                                                                                                                                },
+                                                                                                                                            },
+                                                                                                                                            Expr {
+                                                                                                                                                vartype: Some(
+                                                                                                                                                    String,
+                                                                                                                                                ),
+                                                                                                                                                kind: VarName {
+                                                                                                                                                    source: Local {
+                                                                                                                                                        localidx: 9,
+                                                                                                                                                        next: None,
+                                                                                                                                                    },
+                                                                                                                                                },
+                                                                                                                                            },
+                                                                                                                                        ],
+                                                                                                                                    },
+                                                                                                                                },
+                                                                                                                            },
+                                                                                                                        },
+                                                                                                                    },
+                                                                                                                },
+                                                                                                            },
+                                                                                                        },
+                                                                                                    },
+                                                                                                },
+                                                                                                false_expr: Expr {
+                                                                                                    vartype: Some(
+                                                                                                        Undefined,
+                                                                                                    ),
+                                                                                                    kind: PrimUndefined,
+                                                                                                },
+                                                                                            },
+                                                                                        },
+                                                                                        false_expr: Expr {
+                                                                                            vartype: Some(
+                                                                                                Undefined,
+                                                                                            ),
+                                                                                            kind: PrimUndefined,
+                                                                                        },
+                                                                                    },
+                                                                                },
+                                                                                Expr {
+                                                                                    vartype: None,
+                                                                                    kind: Trap {
+                                                                                        code: 17,
+                                                                                        location: SourceLocation {
+                                                                                            file: 0,
+                                                                                            start: Position {
+                                                                                                line: 2,
+                                                                                                column: 25,
+                                                                                            },
+                                                                                            end: Position {
+                                                                                                line: 2,
+                                                                                                column: 40,
+                                                                                            },
+                                                                                        },
+                                                                                    },
+                                                                                },
+                                                                            ],
+                                                                        },
+                                                                    },
+                                                                },
+                                                            },
+                                                        },
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+            signature_filter: [],
+        },
+        Func {
+            params: [],
+            result: Some(
+                Any,
+            ),
+            expr: Expr {
+                vartype: Some(
+                    Any,
+                ),
+                kind: Sequence {
+                    content: [
+                        Expr {
+                            vartype: Some(
+                                Undefined,
+                            ),
+                            kind: Assign {
+                                target: Global {
+                                    globalidx: 0,
+                                    next: None,
+                                },
+                                expr: Expr {
+                                    vartype: Some(
+                                        Func,
+                                    ),
+                                    kind: Declaration {
+                                        local: StructT {
+                                            typeidx: 0,
+                                        },
+                                        init: Some(
+                                            Expr {
+                                                vartype: Some(
+                                                    StructT {
+                                                        typeidx: 0,
+                                                    },
+                                                ),
+                                                kind: PrimStructT {
+                                                    typeidx: 0,
+                                                },
+                                            },
+                                        ),
+                                        contained_expr: Expr {
+                                            vartype: Some(
+                                                Func,
+                                            ),
+                                            kind: PrimFunc {
+                                                funcidxs: [
+                                                    OverloadEntry {
+                                                        funcidx: 26,
+                                                        has_closure_param: true,
+                                                    },
+                                                ],
+                                                closure: Expr {
+                                                    vartype: Some(
+                                                        StructT {
+                                                            typeidx: 0,
+                                                        },
+                                                    ),
+                                                    kind: VarName {
+                                                        source: Local {
+                                                            localidx: 0,
+                                                            next: None,
+                                                        },
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                        Expr {
+                            vartype: Some(
+                                Any,
+                            ),
+                            kind: Appl {
+                                func: Expr {
+                                    vartype: Some(
+                                        Func,
+                                    ),
+                                    kind: TypeCast {
+                                        test: Expr {
+                                            vartype: Some(
+                                                Any,
+                                            ),
+                                            kind: VarName {
+                                                source: Global {
+                                                    globalidx: 0,
+                                                    next: None,
+                                                },
+                                            },
+                                        },
+                                        expected: Func,
+                                        create_narrow_local: true,
+                                        true_expr: Expr {
+                                            vartype: Some(
+                                                Func,
+                                            ),
+                                            kind: VarName {
+                                                source: Local {
+                                                    localidx: 0,
+                                                    next: None,
+                                                },
+                                            },
+                                        },
+                                        false_expr: Expr {
+                                            vartype: None,
+                                            kind: Trap {
+                                                code: 22,
+                                                location: SourceLocation {
+                                                    file: 0,
+                                                    start: Position {
+                                                        line: 4,
+                                                        column: 0,
+                                                    },
+                                                    end: Position {
+                                                        line: 4,
+                                                        column: 1,
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                                args: [
+                                    Expr {
+                                        vartype: Some(
+                                            Number,
+                                        ),
+                                        kind: PrimNumber {
+                                            val: 24.0,
+                                        },
+                                    },
+                                ],
+                                location: SourceLocation {
+                                    file: 0,
+                                    start: Position {
+                                        line: 4,
+                                        column: 0,
+                                    },
+                                    end: Position {
+                                        line: 4,
+                                        column: 5,
+                                    },
+                                },
+                            },
+                        },
+                    ],
+                },
+            },
+            signature_filter: [],
+        },
+    ],
+    globals: [
+        Any,
+    ],
+    entry_point: 27,
+}

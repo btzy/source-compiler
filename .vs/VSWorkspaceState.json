@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\lib-backend-wasm",
+    "\\lib-ir",
+    "\\lib-ir\\src",
+    "\\lib-ir\\src\\opt",
+    "\\lib-ir\\src\\opt\\inline",
+    "\\wasm-test-harness",
+    "\\wasm-test-harness\\src",
+    "\\wasm-test-local",
+    "\\wasm-test-local\\src"
+  ],
+  "SelectedNode": "\\lib-ir\\src\\lib.rs",
+  "PreviewInSolutionExplorer": false
+}
