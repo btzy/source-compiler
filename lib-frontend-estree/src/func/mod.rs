@@ -105,45 +105,40 @@ impl std::fmt::Display for ParseProgramError {
 pub fn parse_program(
     default_name_ctx: &HashMap<String, PreVar>, // pre-declared Source names
     default_parse_state: &ParseState,           // already parsed automatic imports
-    es_program_node: Node,
+    mut es_program: Program,
     deps: Box<[&(ProgramPreExports, ParseState)]>,
     start_idx: &mut usize,
     filename: Option<String>,
     order: usize,
     ir_program: &mut ir::Program,
+    gen_toplevel_start_index: usize, // Start index of top level node from which we should generate the toplevel seq (used for REPL)
     ir_toplevel_seq: &mut Vec<ir::Expr>,
 ) -> Result<(ProgramPreExports, ParseState), CompileMessage<ParseProgramError>> {
-    if let Node {
-        loc,
-        kind: NodeKind::Program(mut es_program),
-    } = es_program_node
-    {
-        let program_pre_exports: ProgramPreExports = pre_parse::pre_parse_program(
-            &mut es_program,
-            &loc,
-            &mut default_name_ctx.clone(),
-            &deps
-                .iter()
-                .copied()
-                .map(|(pre_exports, _)| pre_exports)
-                .collect::<Box<[&ProgramPreExports]>>(),
-            start_idx,
-            filename.as_deref(),
-        )?;
-        let parse_state: ParseState = post_parse::post_parse_program(
-            es_program,
-            loc,
-            &mut default_parse_state.clone(),
-            &deps
-                .iter()
-                .copied()
-                .map(|(_, parse_state)| parse_state)
-                .collect::<Box<[&ParseState]>>(),
-            filename.as_deref(),
-            ir_program,
-            ir_toplevel_seq,
-        )?;
-        Ok((program_pre_exports, parse_state))
+    let program_pre_exports: ProgramPreExports = pre_parse::pre_parse_program(
+        &mut es_program,
+        &mut default_name_ctx.clone(),
+        &deps
+            .iter()
+            .copied()
+            .map(|(pre_exports, _)| pre_exports)
+            .collect::<Box<[&ProgramPreExports]>>(),
+        start_idx,
+        filename.as_deref(),
+    )?;
+    let parse_state: ParseState = post_parse::post_parse_program(
+        es_program,
+        &mut default_parse_state.clone(),
+        &deps
+            .iter()
+            .copied()
+            .map(|(_, parse_state)| parse_state)
+            .collect::<Box<[&ParseState]>>(),
+        filename.as_deref(),
+        ir_program,
+        gen_toplevel_start_index,
+        ir_toplevel_seq,
+    )?;
+    Ok((program_pre_exports, parse_state))
     /*let current_scope_decls: compact_state::CompactState<compact_state::CurrentScopeItem> =
         compact_state::CompactState::from_unmaterialized(extract_current_decls_and_imports(
             &es_program.body,
@@ -175,10 +170,4 @@ pub fn parse_program(
         };
     }
     Ok(())*/
-    } else {
-        Err(CompileMessage::new_error(
-            es_program_node.loc.into_sl(filename),
-            ParseProgramError::ESTreeError("Root node of ESTree must be Program"),
-        ))
-    }
 }

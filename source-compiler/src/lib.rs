@@ -86,6 +86,7 @@ pub async fn compile(context: i32, source_code: String) -> js_sys::Uint8Array {
 
         //let ir_imports = frontend_estree::parse_imports(import_spec, MainLogger::new(context))?;
         let ir_program = frontend_estree::run_frontend(
+            None,
             source_code,
             move |name| fetch_dep_proxy(context, name),
             MainLogger::new(context),

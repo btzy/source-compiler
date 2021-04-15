@@ -199,15 +199,34 @@ pub trait NodeForEachWithAttributesInto<E> {
     >(
         self,
         filename: Option<&str>,
+        mut f: F,
+    ) -> Result<(), CompileMessage<ParseProgramError>>
+    where
+        Self: Sized,
+    {
+        self.each_with_attributes_into_with_index(filename, move |es_node, attr, _| {
+            f(es_node, attr)
+        })
+    }
+    fn each_with_attributes_into_with_index<
+        F: FnMut(
+            E,
+            HashMap<String, Option<String>>,
+            usize,
+        ) -> Result<(), CompileMessage<ParseProgramError>>,
+    >(
+        self,
+        filename: Option<&str>,
         f: F,
     ) -> Result<(), CompileMessage<ParseProgramError>>;
 }
 
 impl<C: IntoIterator<Item = Node>> NodeForEachWithAttributesInto<Node> for C {
-    fn each_with_attributes_into<
+    fn each_with_attributes_into_with_index<
         F: FnMut(
             Node,
             HashMap<String, Option<String>>,
+            usize,
         ) -> Result<(), CompileMessage<ParseProgramError>>,
     >(
         self,
@@ -215,7 +234,7 @@ impl<C: IntoIterator<Item = Node>> NodeForEachWithAttributesInto<Node> for C {
         mut f: F,
     ) -> Result<(), CompileMessage<ParseProgramError>> {
         let mut prev_attr: Option<(HashMap<String, Option<String>>, plSLRef)> = None;
-        for node in self {
+        for (i, node) in self.into_iter().enumerate() {
             if let Node {
                 loc: stmtloc,
                 kind: NodeKind::ExpressionStatement(expr_stmt),
@@ -270,7 +289,11 @@ impl<C: IntoIterator<Item = Node>> NodeForEachWithAttributesInto<Node> for C {
                     }
                 }
             }
-            f(node, prev_attr.map_or_else(|| HashMap::new(), |(x, sl)| x))?;
+            f(
+                node,
+                prev_attr.map_or_else(|| HashMap::new(), |(x, sl)| x),
+                i,
+            )?;
             prev_attr = None;
         }
         if let Some((_, sl)) = prev_attr {

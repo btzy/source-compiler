@@ -177,4 +177,8 @@ impl<T> Graph<T> {
             .map(|node| (node.deps, node.content, node.name))
     }
     */
+
+    pub fn len(&self) -> usize {
+        return self.nodes.len();
+    }
 }

@@ -34,7 +34,6 @@ use std::collections::HashSet;
  */
 pub fn pre_parse_program(
     es_program: &mut Program,
-    _loc: &Option<esSL>,
     name_ctx: &mut HashMap<String, PreVar>, // pre-declared Source names
     import_ctx: &[&ProgramPreExports], // all prevars here must be globals, i.e. have depth == 0
     /* depth: usize */ // not needed, implied to be 0

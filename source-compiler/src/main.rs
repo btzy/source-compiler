@@ -69,9 +69,13 @@ fn main() {
         use wasmgen::WasmSerialize;
 
         //let ir_imports = frontend_estree::parse_imports(import_spec, MainLogger::new(context))?;
-        let ir_program =
-            frontend_estree::run_frontend(SOURCE_CODE.to_owned(), fetch_dep_proxy, MainLogger {})
-                .await?;
+        let ir_program = frontend_estree::run_frontend(
+            None,
+            SOURCE_CODE.to_owned(),
+            fetch_dep_proxy,
+            MainLogger {},
+        )
+        .await?;
         {
             use std::io::prelude::*;
             let mut file = std::fs::File::create("out-noop.ir").unwrap();

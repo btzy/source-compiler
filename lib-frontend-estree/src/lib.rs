@@ -36,8 +36,9 @@ pub type ProgramPreExports = VarCtx<String, VarValue<VarLocId, Box<[ir::VarType]
 pub type ParseState = parse_state::ParseState;
 // note: ProgramExports is kept in increasing order of VarLocId (in its natural ordering)
 
+// Stores a source file (either a estree program or an importspec)
 enum SourceItem {
-    ESTree(estree::Node),
+    ESTree(estree::Program),
     ImportSpec(importer::ImportSpec),
 }
 
@@ -71,15 +72,8 @@ impl<Fut: Future<Output = Option<String>>, F: 'static + Copy + FnOnce(String) ->
                             .map(|import_spec| SourceItem::ImportSpec(import_spec))
                             .map_err(|e| e.into_cm())
                     } else {
-                        serde_json::from_str(estree_str.as_str())
-                            .map(|estree_node| SourceItem::ESTree(estree_node))
-                            .map_err(|_| {
-                                CompileMessage::new_error(
-                                    plSLRef::entire_file(Some(name)).to_owned(),
-                                    ESTreeParseError {},
-                                )
-                                .into_cm()
-                            })
+                        try_convert_to_program(serde_json::from_str(estree_str.as_str()))
+                            .map(|es_program| SourceItem::ESTree(es_program))
                     }
                 },
             )
@@ -92,32 +86,31 @@ impl<'a> dep_graph::ExtractDeps<'a> for SourceItem {
     type Iter = Box<dyn Iterator<Item = (import_name_resolver::ResolveIter, plSLRef<'a>)> + 'a>;
     fn extract_deps(&'a self, filename: Option<&'a str>) -> Self::Iter {
         match self {
-            SourceItem::ESTree(es_node) => Box::new(
-                (match &es_node.kind {
-                    NodeKind::Program(es_program) => es_program.body.as_slice(),
-                    _ => &[],
-                })
-                .iter()
-                .filter_map(move |es_node| {
-                    if let NodeKind::ImportDeclaration(ImportDeclaration {
-                        specifiers: _,
-                        source,
-                    }) = &es_node.kind
-                    {
-                        if let NodeKind::Literal(Literal {
-                            value: LiteralValue::String(s),
-                        }) = &source.kind
+            SourceItem::ESTree(es_program) => Box::new(
+                es_program
+                    .body
+                    .as_slice()
+                    .iter()
+                    .filter_map(move |es_node| {
+                        if let NodeKind::ImportDeclaration(ImportDeclaration {
+                            specifiers: _,
+                            source,
+                        }) = &es_node.kind
                         {
-                            return Some((
-                                import_name_resolver::resolve(s.as_str(), filename),
-                                source.loc.into_sl(filename),
-                            ));
+                            if let NodeKind::Literal(Literal {
+                                value: LiteralValue::String(s),
+                            }) = &source.kind
+                            {
+                                return Some((
+                                    import_name_resolver::resolve(s.as_str(), filename),
+                                    source.loc.into_sl(filename),
+                                ));
+                            }
                         }
-                    }
-                    None
-                }),
+                        None
+                    }),
             ),
-            SourceItem::ImportSpec(import_spec) => Box::new(std::iter::empty()),
+            SourceItem::ImportSpec(_import_spec) => Box::new(std::iter::empty()),
         }
     }
 }
@@ -127,16 +120,36 @@ pub async fn run_frontend<
     F: 'static + Copy + FnOnce(String) -> Fut,
     Fut: Future<Output = Option<String>>,
 >(
-    estree_str: String,
+    estree_prev_str_opt: Option<String>, // part of the program that we already executed previously and so don't want to execute again (used for REPL)
+    estree_curr_str: String, // part of the program that we have not seen before so we must execute the top-level
     raw_fetch: F,
     logger: L,
 ) -> Result<ir::Program, ()> {
-    // parse the given string as estree
-    let es_program: estree::Node = serde_json::from_str(estree_str.as_str())
-        .map_err(|_| {
-            CompileMessage::new_error(plSLRef::entire_file(None).to_owned(), ESTreeParseError {})
-        })
-        .log_err(&logger)?;
+    let (es_program, es_prev_numstatements) = match estree_prev_str_opt {
+        Some(estree_prev_str) => {
+            // parse the given strings as estree
+            let es_prev_program: estree::Program = try_convert_to_program::<ESTreeError, _>(
+                serde_json::from_str(estree_prev_str.as_str()),
+            )
+            .log_err(&logger)?;
+            let es_curr_program: estree::Program = try_convert_to_program::<ESTreeError, _>(
+                serde_json::from_str(estree_curr_str.as_str()),
+            )
+            .log_err(&logger)?;
+            let (es_program, numstmts) = combine_estrees(es_prev_program, es_curr_program);
+            (es_program, Some(numstmts))
+        }
+        None => {
+            // parse the just the estree_curr_str as estree
+            (
+                try_convert_to_program::<ESTreeError, _>(serde_json::from_str(
+                    estree_curr_str.as_str(),
+                ))
+                .log_err(&logger)?,
+                None,
+            )
+        }
+    };
 
     // fetch and parse all the import files
     let dep_graph = dep_graph::Graph::try_async_build_from_root(
@@ -159,7 +172,7 @@ pub async fn run_frontend<
                 None
             }
         })
-        .flat_map(|import_spec| import_spec.content.iter().map(|(name, import)| import))
+        .flat_map(|import_spec| import_spec.content.iter().map(|(_name, import)| import))
         .cloned()
         .collect();
 
@@ -178,6 +191,7 @@ pub async fn run_frontend<
     // construct the ir_program with the given imports
     let mut ir_program = ir::Program::new_with_imports(imports.into_boxed_slice());
     let mut ir_toplevel_sequence: Vec<ir::Expr> = Vec::new();
+    let root_source_item_index = dep_graph.len() - 1;
 
     // parse all the source files in topological order
     //let default_state: compact_state::CompactState<compact_state::FrontendVar> =
@@ -200,6 +214,16 @@ pub async fn run_frontend<
                 filename,
                 i,
                 &mut ir_program,
+                match es_prev_numstatements {
+                    Some(numstmts) => {
+                        if i == root_source_item_index {
+                            numstmts
+                        } else {
+                            usize::MAX
+                        }
+                    }
+                    None => 0,
+                },
                 &mut ir_toplevel_sequence,
             )
             .map_err(|cm| {
@@ -234,6 +258,51 @@ pub async fn run_frontend<
     ir_program.entry_point = ir_program.add_func(ir_toplevel_func);
 
     Ok(ir_program)
+}
+
+// Tries to convert the return object from serde_json into a estree::Program.
+fn try_convert_to_program<E: From<ESTreeParseError> + From<ESTreeRootNotProgramError>, F>(
+    serde_result: Result<estree::Node, F>,
+) -> Result<estree::Program, CompileMessage<E>> {
+    serde_result
+        .map_err(|_| {
+            CompileMessage::new_error(plSLRef::entire_file(None).to_owned(), ESTreeParseError {})
+                .into_cm()
+        })
+        .and_then(|es_program_node| {
+            if let Node {
+                loc: _,
+                kind: NodeKind::Program(es_program),
+            } = es_program_node
+            {
+                Ok(es_program)
+            } else {
+                Err(CompileMessage::new_error(
+                    es_program_node.loc.into_sl(Option::<String>::None),
+                    ESTreeRootNotProgramError {},
+                )
+                .into_cm())
+            }
+        })
+}
+
+/// Combines two programs.
+/// Returns a combined program, and the index where the second program starts.
+fn combine_estrees(
+    es_prev_program: estree::Program,
+    es_curr_program: estree::Program,
+) -> (estree::Program, usize) {
+    let prev_program_size = es_prev_program.body.len();
+    let mut prev_program_mut = es_prev_program.body;
+    let mut curr_program_mut = es_curr_program.body;
+    prev_program_mut.append(&mut curr_program_mut);
+    (
+        estree::Program {
+            body: prev_program_mut,
+            direct_funcs: Default::default(),
+        },
+        prev_program_size,
+    )
 }
 
 // END OF NEW THINGS

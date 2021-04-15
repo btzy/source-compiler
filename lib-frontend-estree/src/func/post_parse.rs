@@ -29,11 +29,11 @@ use std::result::Result;
  */
 pub fn post_parse_program(
     es_program: Program,
-    loc: Option<esSL>,
     parse_ctx: &mut ParseState,
     deps: &[&ParseState],
     filename: Option<&str>,
     ir_program: &mut ir::Program,
+    gen_toplevel_start_index: usize, // Start index of top level node from which we should generate the toplevel seq (used for REPL)
     ir_toplevel_seq: &mut Vec<ir::Expr>,
 ) -> Result<ParseState, CompileMessage<ParseProgramError>> {
     let (mut body, direct_funcs) = es_program.destructure();
@@ -185,7 +185,7 @@ pub fn post_parse_program(
     let mut exports: ParseState = Default::default();
 
     // emit the body
-    body.each_with_attributes_into(filename, |es_node, attr| {
+    body.each_with_attributes_into_with_index(filename, |es_node, attr, i| {
         let ir_expr: ir::Expr = post_parse_toplevel_statement(
             es_node,
             attr,
@@ -195,7 +195,9 @@ pub fn post_parse_program(
             ir_program,
             &mut exports,
         )?;
-        ir_toplevel_seq.push(ir_expr);
+        if i >= gen_toplevel_start_index {
+            ir_toplevel_seq.push(ir_expr);
+        }
         Ok(())
     })?;
 
